@@ -1,14 +1,14 @@
 # Microblog todos:
-- [ ] Site header / navigation that appears on all pages
-  - [ ] link to / homepage "Blog"
-  - [ ] Link to post-add form: "Add a new post"
+- [x] Site header / navigation that appears on all pages
+  - [x] link to / homepage "Blog"
+  - [x] Link to post-add form: "Add a new post"
 
 - [ ] New Post Form
   - [ ] Title
   - [ ] Description
   - [ ] body
   - [ ] Routed to `/new`
-  - [ ] Canceling should redirect to homepage
+  - [x] Canceling should redirect to homepage
   - [ ] saving should redirect to homepage 
 
 - [ ] A "Post view" page shows a post > Routed to `/[postid]`
