@@ -1,31 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
+import BlogContext from './common/BlogContext';
 
-const BlogForm = ({ addBlogPost }) => {
+const BlogForm = ({
+	addBlogPost,
+	setIsEditing,
+	editPost = { title: '', description: '', body: '' }
+}) => {
 	const INITIAL_STATE = {
-		title       : '',
-		description : '',
-		body        : ''
+		title       : editPost.title,
+		description : editPost.description,
+		body        : editPost.body
 	};
+	const { updateBlogPost } = useContext(BlogContext);
+
 	const [ formData, setFormData ] = useState(INITIAL_STATE);
 	const history = useHistory();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addBlogPost({ ...formData, id: uuid() });
-		// setFormData(INITIAL_STATE);
-		history.push('/');
+
+		if (editPost.id) {
+			updateBlogPost({ ...formData, id: editPost.id });
+			setIsEditing((status) => !status);
+		} else {
+			addBlogPost({ ...formData, id: uuid() });
+			history.push('/');
+		}
 	};
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((fData) => ({ ...fData, [name]: value }));
 	};
+	const handleCancelEdit = () => setIsEditing((status) => !status);
 
 	return (
 		<React.Fragment>
 			<div className='BlogForm-container container'>
-				<div className='BlogForm-title h1'>New Post</div>
+				<div className='BlogForm-title h1'>{editPost.id ? 'Edit' : 'New'} Post</div>
 				<div className='BlogForm-form'>
 					<form onSubmit={handleSubmit}>
 						<div className='form-group'>
@@ -64,9 +77,16 @@ const BlogForm = ({ addBlogPost }) => {
 								onChange={handleChange}
 							/>
 						</div>
-						<NavLink to='/' className='btn btn-secondary mr-2'>
-							Cancel
-						</NavLink>
+
+						{editPost.id ? (
+							<button className='btn btn-secondary mr-2' onClick={handleCancelEdit}>
+								Cancel Edit
+							</button>
+						) : (
+							<NavLink to='/' className='btn btn-secondary mr-2'>
+								Cancel
+							</NavLink>
+						)}
 						<button className='btn btn-primary ml-2'>Submit</button>
 					</form>
 				</div>

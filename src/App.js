@@ -10,9 +10,17 @@ function App() {
 	const addBlogPost = (formData) => {
 		setBlogPosts((oldPosts) => [ ...oldPosts, formData ]);
 	};
+	const updateBlogPost = (formData) => {
+		const oldBlogPosts = blogPosts.filter((post) => post.id !== formData.id);
+		setBlogPosts([ ...oldBlogPosts, formData ]);
+	};
+	const deleteBlogPost = (id) => {
+		const oldBlogPosts = blogPosts.filter((post) => post.id !== id);
+		setBlogPosts([ ...oldBlogPosts ]);
+	};
 	return (
 		<BrowserRouter>
-			<BlogContext.Provider value={{ blogPosts }}>
+			<BlogContext.Provider value={{ blogPosts, updateBlogPost, deleteBlogPost }}>
 				<div className='App-container'>
 					<Home />
 				</div>
