@@ -10,12 +10,18 @@
   - [x] Routed to `/new`
   - [x] Canceling should redirect to homepage
   - [x] saving should redirect to homepage 
-  - [ ] use same form for editing a blog post
+  - [x] use same form for editing a blog post
 
 - [x] A "Post view" page shows a post > Routed to `/[postid]`
-  - [ ] It should have a button that shows and edit form for the post
-  - [ ] It should have a button to delete the post
+  - [x] It should have a button that shows and edit form for the post
+  - [x] It should have a button to delete the post
 
 - [x] A "homepage list" that shows the title and descriptio nof each post
   - [x] The title should be a link to the detail of the post
   - [x] This should be routed to `/`
+
+- [ ] Add comments
+  - [ ] Add a feature that lets visitors comment on individual posts
+  - [ ] on the post-view, it should list all existing comments (in order they were made)
+  - [ ] Delete button to delete a comment
+  - [ ] below that should be ian inline form for adding a new comment

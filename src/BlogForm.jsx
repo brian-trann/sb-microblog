@@ -11,7 +11,8 @@ const BlogForm = ({
 	const INITIAL_STATE = {
 		title       : editPost.title,
 		description : editPost.description,
-		body        : editPost.body
+		body        : editPost.body,
+		comments    : []
 	};
 	const { updateBlogPost } = useContext(BlogContext);
 
