@@ -1,19 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import BlogForm from './BlogForm';
+import { useSelector } from 'react-redux';
 import NoBlogPosts from './NoBlogPosts';
-import BlogContext from './common/BlogContext';
 import BlogDetails from './BlogDetails';
 import BlogCard from './BlogCard';
 import BlogHome from './BlogHome';
-const Routes = ({ addBlogPost }) => {
-	const { blogPosts } = useContext(BlogContext);
+import NewBlogPost from './NewBlogPost';
+const Routes = () => {
+	const posts = useSelector((st) => st.posts);
 
-	const renderBlogPosts = (blogPosts) =>
-		!!blogPosts.length ? (
-			blogPosts.map((post) => (
-				<div className='col-sm-6' key={post.id}>
-					<BlogCard post={post} key={post.id} />
+	const renderBlogPosts = (posts) =>
+		!!Object.keys(posts).length ? (
+			Object.keys(posts).map((id) => (
+				<div className='col-sm-6' key={id}>
+					<BlogCard post={posts[id]} key={id} />
 				</div>
 			))
 		) : (
@@ -25,11 +25,11 @@ const Routes = ({ addBlogPost }) => {
 			<Route exact path='/'>
 				<div className='container'>
 					<BlogHome />
-					<div className='row'>{renderBlogPosts(blogPosts)}</div>
+					<div className='row'>{renderBlogPosts(posts)}</div>
 				</div>
 			</Route>
 			<Route exact path='/new'>
-				<BlogForm addBlogPost={addBlogPost} />
+				<NewBlogPost />
 			</Route>
 			<Route exact path='/:postId'>
 				<BlogDetails />

@@ -20,8 +20,11 @@
   - [x] The title should be a link to the detail of the post
   - [x] This should be routed to `/`
 
-- [ ] Add comments
-  - [ ] Add a feature that lets visitors comment on individual posts
-  - [ ] on the post-view, it should list all existing comments (in order they were made)
-  - [ ] Delete button to delete a comment
-  - [ ] below that should be ian inline form for adding a new comment
+- [x] Add comments
+  - [x] Add a feature that lets visitors comment on individual posts
+  - [x] on the post-view, it should list all existing comments (in order they were made)
+  - [x] Delete button to delete a comment
+  - [x] below that should be ian inline form for adding a new comment
+
+
+- [ ] Refactor: Use Redux

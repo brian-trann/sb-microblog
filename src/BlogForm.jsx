@@ -1,32 +1,33 @@
-import React, { useState, useContext } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useHistory, NavLink } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import BlogContext from './common/BlogContext';
-
+import { useDispatch } from 'react-redux';
+import { updatePost } from './actions/posts';
 const BlogForm = ({
-	addBlogPost,
+	add,
 	setIsEditing,
-	editPost = { title: '', description: '', body: '' }
+	post = { title: '', description: '', body: '', comments: [] }
 }) => {
 	const INITIAL_STATE = {
-		title       : editPost.title,
-		description : editPost.description,
-		body        : editPost.body,
-		comments    : []
+		title       : post.title,
+		description : post.description,
+		body        : post.body,
+		comments    : post.comments
 	};
-	const { updateBlogPost } = useContext(BlogContext);
+
+	const { postId } = useParams();
 
 	const [ formData, setFormData ] = useState(INITIAL_STATE);
 	const history = useHistory();
-
+	const dispatch = useDispatch();
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (editPost.id) {
-			updateBlogPost({ ...formData, id: editPost.id });
+		if (postId) {
+			dispatch(updatePost({ ...formData, id: postId }));
 			setIsEditing((status) => !status);
 		} else {
-			addBlogPost({ ...formData, id: uuid() });
+			add({ ...formData, id: uuid() });
 			history.push('/');
 		}
 	};
@@ -39,7 +40,7 @@ const BlogForm = ({
 	return (
 		<React.Fragment>
 			<div className='BlogForm-container container'>
-				<div className='BlogForm-title h1'>{editPost.id ? 'Edit' : 'New'} Post</div>
+				<div className='BlogForm-title h1'>{postId ? 'Edit' : 'New'} Post</div>
 				<div className='BlogForm-form'>
 					<form onSubmit={handleSubmit}>
 						<div className='form-group'>
@@ -79,7 +80,7 @@ const BlogForm = ({
 							/>
 						</div>
 
-						{editPost.id ? (
+						{postId ? (
 							<button className='btn btn-secondary mr-2' onClick={handleCancelEdit}>
 								Cancel Edit
 							</button>

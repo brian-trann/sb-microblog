@@ -1,38 +1,35 @@
-import React, { useContext, useState } from 'react';
-import { useParams, Redirect } from 'react-router-dom';
-import BlogContext from './common/BlogContext';
+import React, { useState } from 'react';
+import { useParams, Redirect, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { deletePost, addComment, deleteComment } from './actions/posts';
 import BlogButtons from './BlogButtons';
 import BlogForm from './BlogForm';
 import CommentList from './CommentList';
 import './BlogDetails.css';
 const BlogDetails = () => {
 	const { postId } = useParams();
-	const { blogPosts, deleteBlogPost, addBlogComment, deleteBlogComment } = useContext(
-		BlogContext
-	);
+	const dispatch = useDispatch();
+	const post = useSelector((st) => st.posts[postId]);
+	const history = useHistory();
 	const [ isEditing, setIsEditing ] = useState(false);
 	const handleEditing = () => {
 		setIsEditing((status) => !status);
 	};
 	const handleDelete = (id) => {
-		deleteBlogPost(id);
+		dispatch(deletePost(id));
+		history.push('/');
 	};
 
-	const filteredPost = blogPosts.filter((p) => p.id === postId);
+	if (!post) return <Redirect to='/' />;
 
-	if (filteredPost.length === 0) return <Redirect to='/' />;
 	const handleAddComment = (commentObj) => {
-		const [ blogPostObj ] = filteredPost;
-		addBlogComment(blogPostObj, commentObj);
-		// text , id
+		dispatch(addComment(postId, commentObj));
 	};
-	const handleDeleteComment = (id) => {
-		const [ blogPostObj ] = filteredPost;
-
-		deleteBlogComment(blogPostObj, id);
+	const handleDeleteComment = (commentId) => {
+		dispatch(deleteComment(postId, commentId));
 	};
 
-	const [ { title, description, body, id, comments } ] = filteredPost;
+	const { title, description, body, id, comments } = post;
 	const blogDetails = (
 		<div className='BlogDetails-container container my-5'>
 			<div className='BlogDetails-title h2'>{title}</div>
@@ -59,7 +56,7 @@ const BlogDetails = () => {
 					<BlogForm
 						handleEditing={handleEditing}
 						setIsEditing={setIsEditing}
-						editPost={{ title, description, id, body }}
+						post={post}
 					/>
 				)}
 			</div>
