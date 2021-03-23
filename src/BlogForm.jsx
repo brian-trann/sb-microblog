@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useParams, useHistory, NavLink } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
+import { useParams, NavLink } from 'react-router-dom';
+
 import { useDispatch } from 'react-redux';
-import { updatePost } from './actions/posts';
+import { updatePostToApi } from './actions/posts';
 const BlogForm = ({
 	add,
 	setIsEditing,
@@ -18,17 +18,17 @@ const BlogForm = ({
 	const { postId } = useParams();
 
 	const [ formData, setFormData ] = useState(INITIAL_STATE);
-	const history = useHistory();
+
 	const dispatch = useDispatch();
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		if (postId) {
-			dispatch(updatePost({ ...formData, id: postId }));
+			console.log({ ...formData });
+			dispatch(updatePostToApi({ ...formData, id: postId }));
 			setIsEditing((status) => !status);
 		} else {
-			add({ ...formData, id: uuid() });
-			history.push('/');
+			add({ ...formData });
 		}
 	};
 	const handleChange = (e) => {

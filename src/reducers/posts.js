@@ -3,7 +3,8 @@ import {
 	DELETE_POST,
 	UPDATE_POST,
 	ADD_COMMENT,
-	DELETE_COMMENT
+	DELETE_COMMENT,
+	FETCH_POST
 } from '../actions/actionTypes';
 
 const rootReducer = (state = {}, action) => {
@@ -13,7 +14,6 @@ const rootReducer = (state = {}, action) => {
 			return { ...state, [action.post.id]: { ...action.post, comments: [] } };
 		case DELETE_POST:
 			const posts = { ...state };
-			console.log(action.postId);
 			delete posts[action.postId];
 			return posts;
 
@@ -32,9 +32,11 @@ const rootReducer = (state = {}, action) => {
 				...state,
 				[action.postId]: {
 					...post,
-					comments: post.comments.filter((c) => c.id !== action.commentId)
+					comments : post.comments.filter((c) => c.id !== action.commentId)
 				}
 			};
+		case FETCH_POST:
+			return { ...state, [action.post.id]: action.post };
 		default:
 			return state;
 	}
