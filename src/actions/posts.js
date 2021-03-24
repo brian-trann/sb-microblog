@@ -4,7 +4,8 @@ import {
 	UPDATE_POST,
 	ADD_COMMENT,
 	DELETE_COMMENT,
-	FETCH_POST
+	FETCH_POST,
+	CAST_VOTE
 } from './actionTypes';
 import axios from 'axios';
 const BASE_URL = 'http://localhost:5000/api/posts';
@@ -43,8 +44,13 @@ export function deleteComment(postId, commentId) {
 }
 export function getPostFromApi(id) {
 	return async function(dispatch) {
-		const res = await axios.get(`${BASE_URL}/${id}`);
-		return dispatch(getPost(res.data));
+		try {
+			const res = await axios.get(`${BASE_URL}/${id}`);
+			return dispatch(getPost(res.data));
+		} catch (error) {
+			console.log(error);
+			// would make a new dispatch, to do stuff
+		}
 	};
 }
 function getPost(post) {
@@ -85,5 +91,18 @@ export function updatePostToApi(post) {
 		const { id, title, body, description } = post;
 		const res = await axios.put(`${BASE_URL}/${id}`, { title, description, body });
 		return dispatch(updatePost(res.data));
+	};
+}
+export function addVoteToApi(postId, direction) {
+	return async function(dispatch) {
+		const res = await axios.post(`${BASE_URL}/${postId}/vote/${direction}`);
+		return dispatch(castVote(postId, res.data.votes));
+	};
+}
+function castVote(postId, votes) {
+	return {
+		type   : CAST_VOTE,
+		postId : postId,
+		votes  : votes
 	};
 }

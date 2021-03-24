@@ -53,3 +53,14 @@ When doing async stuff with dispatch, I found out that I would need to chain a `
 ```javascript
 dispatch(addPostToApi(post)).then(() => history.push('/'))
 ```
+
+## Part 5
+Voting
+- [x] add a footer to each card
+- [x] add Up/Down arrows to each card and each BlogDetail detail
+  - [x] Seems like a good component
+
+### part 5 notes:
+There was an interesting bug when the user would click on vote > then it would post and change the state. but since we were sharing an action creator, utilizing the same action type. this would make a posts: `{votes: num}` with no id property. which would then cause an error because the posts obj existed... but it was kind of incomplete. not all of the other props were there. So if the post in the state, did not have enough keys, we would get the new post.
+
+Another bug that I did not have time for, was catching and handling invalid /:postId numbers. it would hang on loading.

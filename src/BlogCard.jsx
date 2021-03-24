@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardSubtitle, CardTitle } from 'reactstrap';
-const BlogCard = ({ post }) => {
-	const { id, title, description } = post;
+import { Card, CardSubtitle, CardTitle, CardFooter } from 'reactstrap';
+import VoteButtons from './VoteButtons';
+const BlogCard = ({ post, vote }) => {
+	const { id, title, description, votes } = post;
 
 	return (
 		<div className='BlogCard-container container my-3' key={id}>
@@ -15,6 +16,9 @@ const BlogCard = ({ post }) => {
 				<CardSubtitle className='mx-3 mb-3'>
 					<i>{description}</i>
 				</CardSubtitle>
+				<CardFooter>
+					Votes: {votes} <VoteButtons vote={vote} postId={id} />
+				</CardFooter>
 			</Card>
 		</div>
 	);

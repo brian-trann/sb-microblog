@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchTitles } from './actions/titles';
 import BlogCard from './BlogCard';
 import NoBlogPosts from './NoBlogPosts';
+import { addVoteToApi } from './actions/posts';
 
 const TitleList = () => {
 	const [ isLoading, setIsLoading ] = useState(true);
@@ -20,6 +21,9 @@ const TitleList = () => {
 		},
 		[ dispatch, isLoading ]
 	);
+	const vote = (postId, direction) => {
+		dispatch(addVoteToApi(postId, direction));
+	};
 
 	const renderBlogPosts = (titles) => {
 		if (isLoading) return <div className='h4'>Loading...</div>;
@@ -28,7 +32,7 @@ const TitleList = () => {
 
 		return titles.map((t) => (
 			<div className='col-sm-6' key={t.id}>
-				<BlogCard post={t} key={t.id} />
+				<BlogCard post={t} key={t.id} vote={vote} />
 			</div>
 		));
 	};

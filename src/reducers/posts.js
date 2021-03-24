@@ -4,7 +4,8 @@ import {
 	UPDATE_POST,
 	ADD_COMMENT,
 	DELETE_COMMENT,
-	FETCH_POST
+	FETCH_POST,
+	CAST_VOTE
 } from '../actions/actionTypes';
 
 const rootReducer = (state = {}, action) => {
@@ -37,6 +38,8 @@ const rootReducer = (state = {}, action) => {
 			};
 		case FETCH_POST:
 			return { ...state, [action.post.id]: action.post };
+		case CAST_VOTE:
+			return { ...state, [action.postId]: { ...post, votes: action.votes } };
 		default:
 			return state;
 	}
